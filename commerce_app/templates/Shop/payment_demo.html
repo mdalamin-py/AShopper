@@ -1,0 +1,443 @@
+{% extends 'Shop/base.html' %}
+{% load static %}
+
+{% block title %}
+Payment Gateway - Demo Mode
+{% endblock %}
+
+{% block main %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">Secure Payment</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="{% url 'home' %}">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0"><a href="{% url 'cart_show' %}">Cart</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0"><a href="{% url 'checkout' %}">Checkout</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Payment</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Payment Demo Start -->
+<div class="container-fluid pt-5 pb-5">
+  <div class="row px-xl-5 justify-content-center">
+    <div class="col-lg-8">
+      <!-- Demo Mode Notice -->
+      <div class="alert alert-info mb-4" role="alert">
+        <h5 class="alert-heading"><i class="fa fa-info-circle"></i> Demo Mode Active</h5>
+        <p>This is a demonstration payment gateway. No real transactions will be processed.</p>
+        <hr>
+        <p class="mb-0"><strong>Test Mobile Banking:</strong> 01XXXXXXXXX | <strong>PIN:</strong> Any 4 digits</p>
+        <p class="mb-0"><strong>Test Card:</strong> 4242 4242 4242 4242 | <strong>Expiry:</strong> Any future date | <strong>CVV:</strong> Any 3 digits</p>
+      </div>
+
+      <!-- Payment Method Selection -->
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+          <h5 class="mb-3">Select Payment Method</h5>
+          <div class="row">
+            <!-- bKash -->
+            <div class="col-md-3 col-6 mb-3">
+              <input type="radio" class="btn-check" name="payment_method" id="bkash" value="bkash" checked>
+              <label class="btn btn-outline-danger w-100 payment-method-btn" for="bkash" style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <i class="fas fa-mobile-alt fa-2x mb-2" style="color: #E2136E;"></i>
+                <strong>bKash</strong>
+              </label>
+            </div>
+
+            <!-- Nagad -->
+            <div class="col-md-3 col-6 mb-3">
+              <input type="radio" class="btn-check" name="payment_method" id="nagad" value="nagad">
+              <label class="btn btn-outline-warning w-100 payment-method-btn" for="nagad" style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <i class="fas fa-mobile-alt fa-2x mb-2" style="color: #EE4023;"></i>
+                <strong>Nagad</strong>
+              </label>
+            </div>
+
+            <!-- Rocket -->
+            <div class="col-md-3 col-6 mb-3">
+              <input type="radio" class="btn-check" name="payment_method" id="rocket" value="rocket">
+              <label class="btn btn-outline-primary w-100 payment-method-btn" for="rocket" style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <i class="fas fa-mobile-alt fa-2x mb-2" style="color: #8B3A8E;"></i>
+                <strong>Rocket</strong>
+              </label>
+            </div>
+
+            <!-- Card Payment -->
+            <div class="col-md-3 col-6 mb-3">
+              <input type="radio" class="btn-check" name="payment_method" id="card" value="card">
+              <label class="btn btn-outline-success w-100 payment-method-btn" for="card" style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <i class="fas fa-credit-card fa-2x mb-2"></i>
+                <strong>Card</strong>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Gateway Card -->
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0"><i class="fa fa-lock"></i> Secure Payment Gateway</h4>
+          <small>256-bit SSL Encrypted</small>
+        </div>
+        <div class="card-body p-4">
+          <form id="payment-form" method="POST" action="{% url 'process_payment' %}">
+            {% csrf_token %}
+
+            <!-- Order Summary -->
+            <div class="mb-4 p-3 bg-light rounded">
+              <h5 class="mb-3">Order Summary</h5>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span><strong>৳{{ amount }}</strong></span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Shipping:</span>
+                <span><strong>৳100.00</strong></span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <h5>Total Amount:</h5>
+                <h5 class="text-primary"><strong>৳{{ total_amount }}</strong></h5>
+              </div>
+            </div>
+
+            <!-- Mobile Banking Form (bKash, Nagad, Rocket) -->
+            <div id="mobile-banking-form" class="payment-form-section">
+              <!-- Mobile Number -->
+              <div class="form-group mb-4">
+                <label for="mobile-number" class="font-weight-bold">Mobile Number</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-mobile-alt"></i></span>
+                  </div>
+                  <input type="text" class="form-control form-control-lg" id="mobile-number" name="mobile_number"
+                         placeholder="01XXXXXXXXX" maxlength="11" required>
+                </div>
+                <small class="form-text text-muted">Enter your 11-digit mobile number</small>
+              </div>
+
+              <!-- Account Type -->
+              <div class="form-group mb-4">
+                <label class="font-weight-bold">Account Type</label>
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="personal" name="account_type" class="custom-control-input" value="personal" checked>
+                  <label class="custom-control-label" for="personal">Personal</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="agent" name="account_type" class="custom-control-input" value="agent">
+                  <label class="custom-control-label" for="agent">Agent</label>
+                </div>
+              </div>
+
+              <!-- PIN -->
+              <div class="form-group mb-4">
+                <label for="mobile-pin" class="font-weight-bold">PIN Code</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control form-control-lg" id="mobile-pin" name="pin"
+                         placeholder="Enter your PIN" maxlength="5" required>
+                </div>
+                <small class="form-text text-muted">Enter your 4 or 5-digit PIN</small>
+              </div>
+            </div>
+
+            <!-- Card Payment Form -->
+            <div id="card-payment-form" class="payment-form-section" style="display: none;">
+              <div class="form-group mb-4">
+                <label for="card-number" class="font-weight-bold">Card Number</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                  </div>
+                  <input type="text" class="form-control form-control-lg" id="card-number" name="card_number"
+                         placeholder="4242 4242 4242 4242" maxlength="19">
+                </div>
+                <small class="form-text text-muted">Enter 16-digit card number</small>
+              </div>
+
+              <!-- Card Holder Name -->
+              <div class="form-group mb-4">
+                <label for="card-name" class="font-weight-bold">Cardholder Name</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+                  </div>
+                  <input type="text" class="form-control form-control-lg" id="card-name" name="cardholder_name"
+                         placeholder="JOHN DOE">
+                </div>
+              </div>
+
+              <!-- Expiry and CVV -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-4">
+                    <label for="expiry-date" class="font-weight-bold">Expiry Date</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                      </div>
+                      <input type="text" class="form-control form-control-lg" id="expiry-date" name="expiry"
+                             placeholder="MM/YY" maxlength="5">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-4">
+                    <label for="cvv" class="font-weight-bold">CVV Code</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                      </div>
+                      <input type="text" class="form-control form-control-lg" id="cvv" name="cvv"
+                             placeholder="123" maxlength="3">
+                    </div>
+                    <small class="form-text text-muted">3-digit security code</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Billing Address (Hidden) -->
+            <input type="hidden" name="address_id" value="{{ selected_address_id }}">
+
+            <!-- Payment Button -->
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-4" id="pay-button">
+              <i class="fa fa-lock"></i> <span id="pay-button-text">Pay ৳{{ total_amount }} with bKash</span>
+            </button>
+
+            <div class="text-center mt-3">
+              <small class="text-muted">
+                <i class="fa fa-shield-alt"></i> Your payment information is encrypted and secure
+              </small>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer bg-light text-center">
+          <small class="text-muted">
+            <i class="fa fa-lock"></i> Powered by AShopper Secure Payment |
+            <i class="fa fa-shield-alt"></i> PCI DSS Compliant (Demo Mode)
+          </small>
+        </div>
+      </div>
+
+      <!-- Accepted Payment Methods -->
+      <div class="text-center mt-4">
+        <p class="text-muted mb-2">We accept:</p>
+        <div class="d-flex justify-content-center align-items-center">
+          <i class="fab fa-cc-visa fa-3x mx-2 text-primary"></i>
+          <i class="fab fa-cc-mastercard fa-3x mx-2 text-danger"></i>
+          <i class="fab fa-cc-amex fa-3x mx-2 text-info"></i>
+          <i class="fab fa-cc-discover fa-3x mx-2 text-warning"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Payment Demo End -->
+
+<style>
+  .card {
+    border-radius: 15px;
+  }
+
+  .card-header {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  .form-control:focus {
+    border-color: #D19C97;
+    box-shadow: 0 0 0 0.2rem rgba(209, 156, 151, 0.25);
+  }
+
+  #pay-button {
+    background-color: #D19C97;
+    border-color: #D19C97;
+    font-size: 1.2rem;
+    padding: 15px;
+    transition: all 0.3s;
+  }
+
+  #pay-button:hover {
+    background-color: #c08880;
+    border-color: #c08880;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(209, 156, 151, 0.3);
+  }
+
+  .bg-primary {
+    background-color: #D19C97 !important;
+  }
+
+  .text-primary {
+    color: #D19C97 !important;
+  }
+
+  .alert-info {
+    background-color: #e8f4f8;
+    border-color: #b8daff;
+    color: #004085;
+  }
+
+  .payment-method-btn {
+    transition: all 0.3s;
+    border-width: 2px;
+  }
+
+  .payment-method-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  .btn-check:checked + .payment-method-btn {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  }
+
+  .btn-check:checked + .btn-outline-danger {
+    background-color: #E2136E;
+    border-color: #E2136E;
+    color: white;
+  }
+
+  .btn-check:checked + .btn-outline-warning {
+    background-color: #EE4023;
+    border-color: #EE4023;
+    color: white;
+  }
+
+  .btn-check:checked + .btn-outline-primary {
+    background-color: #8B3A8E;
+    border-color: #8B3A8E;
+    color: white;
+  }
+
+  .btn-check:checked + .btn-outline-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+  }
+
+  .btn-check {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  // Payment method toggle
+  const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+  const mobileBankingForm = document.getElementById('mobile-banking-form');
+  const cardPaymentForm = document.getElementById('card-payment-form');
+  const payButtonText = document.getElementById('pay-button-text');
+  const payButton = document.getElementById('pay-button');
+  const totalAmount = '{{ total_amount }}';
+
+  // Payment method names
+  const methodNames = {
+    'bkash': 'bKash',
+    'nagad': 'Nagad',
+    'rocket': 'Rocket',
+    'card': 'Card'
+  };
+
+  // Payment method colors
+  const methodColors = {
+    'bkash': '#E2136E',
+    'nagad': '#EE4023',
+    'rocket': '#8B3A8E',
+    'card': '#28a745'
+  };
+
+  // Toggle payment forms based on selection
+  paymentMethods.forEach(method => {
+    method.addEventListener('change', function() {
+      const selectedMethod = this.value;
+
+      // Toggle forms
+      if (selectedMethod === 'card') {
+        mobileBankingForm.style.display = 'none';
+        cardPaymentForm.style.display = 'block';
+
+        // Make card fields required
+        document.getElementById('card-number').required = true;
+        document.getElementById('card-name').required = true;
+        document.getElementById('expiry-date').required = true;
+        document.getElementById('cvv').required = true;
+
+        // Make mobile fields optional
+        document.getElementById('mobile-number').required = false;
+        document.getElementById('mobile-pin').required = false;
+      } else {
+        mobileBankingForm.style.display = 'block';
+        cardPaymentForm.style.display = 'none';
+
+        // Make mobile fields required
+        document.getElementById('mobile-number').required = true;
+        document.getElementById('mobile-pin').required = true;
+
+        // Make card fields optional
+        document.getElementById('card-number').required = false;
+        document.getElementById('card-name').required = false;
+        document.getElementById('expiry-date').required = false;
+        document.getElementById('cvv').required = false;
+      }
+
+      // Update button text and color
+      payButtonText.textContent = `Pay ৳${totalAmount} with ${methodNames[selectedMethod]}`;
+      payButton.style.backgroundColor = methodColors[selectedMethod];
+      payButton.style.borderColor = methodColors[selectedMethod];
+    });
+  });
+
+  // Auto-format mobile number
+  document.getElementById('mobile-number').addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/\D/g, '');
+  });
+
+  // Auto-format PIN
+  document.getElementById('mobile-pin').addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/\D/g, '');
+  });
+
+  // Auto-format card number
+  document.getElementById('card-number').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s+/g, '');
+    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+    e.target.value = formattedValue;
+  });
+
+  // Auto-format expiry date
+  document.getElementById('expiry-date').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+      e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    } else {
+      e.target.value = value;
+    }
+  });
+
+  // Only allow numbers in CVV
+  document.getElementById('cvv').addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/\D/g, '');
+  });
+
+  // Payment form submission
+  document.getElementById('payment-form').addEventListener('submit', function(e) {
+    const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    payButton.innerHTML = `<i class="fa fa-spinner fa-spin"></i> Processing ${methodNames[selectedMethod]} payment...`;
+    payButton.disabled = true;
+  });
+</script>
+
+{% endblock %}

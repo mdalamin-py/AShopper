@@ -1,0 +1,337 @@
+{% extends 'Shop/base.html' %}
+{% load static %}
+
+{% block title %}
+Help & Support Page
+{% endblock %}
+
+{% block hero %}
+<link href="{% static 'css/help.css' %}" rel="stylesheet" />
+{% endblock hero %}
+
+{% block main %}
+
+<div class="main-container p-5">
+    <div class="page-wrapper">
+        <div class="page-container">
+            <label>
+                <h2 class="fs-heading bolded" style="color: black;">Search our help library</h2>
+                <form method="get" action="/gp/help/customer/display.html/ref=fs_hubgateway_ap"
+                    class="a-spacing-top-small">
+                    <div class="a-search a-span12"><i class="a-icon a-icon-search"></i><input type="search"
+                            maxlength="500" id="hubHelpSearchInput"
+                            placeholder="Type something like, &quot;question about a charge&quot;" name="help_keywords"
+                            spellcheck="false" class="a-input-text a-span12" /></div>
+
+                </form>
+            </label>
+            <h2 class="fs-heading bolded" style="color: black;">All help topics</h2>
+            <div class="help-content-container">
+                <div class="help-topics-list-wrapper">
+                    <ul class="help-topics">
+
+                        <li class="help-topics"><input data-topic="0" type="radio" id="foresight-help-topic-0"
+                                name="select-help-topic" checked><label for="foresight-help-topic-0">Take Quick
+                                Actions</label></li>
+
+                        <li class="help-topics"><input data-topic="1" type="radio" id="foresight-help-topic-1"
+                                name="select-help-topic"><label for="foresight-help-topic-1">Where's my stuff</label>
+                        </li>
+
+                        <li class="help-topics"><input data-topic="2" type="radio" id="foresight-help-topic-2"
+                                name="select-help-topic"><label for="foresight-help-topic-2">Shipping and
+                                Delivery</label></li>
+
+                        <li class="help-topics"><input data-topic="3" type="radio" id="foresight-help-topic-3"
+                                name="select-help-topic"><label for="foresight-help-topic-3">Returns, Refunds and
+                                Product Support</label></li>
+
+                        <li class="help-topics"><input data-topic="4" type="radio" id="foresight-help-topic-4"
+                                name="select-help-topic"><label for="foresight-help-topic-4">Managing Your
+                                Account</label></li>
+
+                        <li class="help-topics"><input data-topic="5" type="radio" id="foresight-help-topic-5"
+                                name="select-help-topic"><label for="foresight-help-topic-5">Security & Privacy</label>
+                        </li>
+
+                        <li class="help-topics"><input data-topic="6" type="radio" id="foresight-help-topic-6"
+                                name="select-help-topic"><label for="foresight-help-topic-6">Payment, Pricing and
+                                Promotions</label></li>
+
+                        <li class="help-topics"><input data-topic="7" type="radio" id="foresight-help-topic-7"
+                                name="select-help-topic"><label for="foresight-help-topic-7">Devices & Digital
+                                Solutions</label></li>
+
+                        <li class="help-topics"><input data-topic="8" type="radio" id="foresight-help-topic-8"
+                                name="select-help-topic"><label for="foresight-help-topic-8">Amazon Business Accounts
+                            </label></li>
+
+                        <li class="help-topics"><input data-topic="9" type="radio" id="foresight-help-topic-9"
+                                name="select-help-topic"><label for="foresight-help-topic-9">Large Items and Heavy-Bulky
+                                Services</label></li>
+
+                        <li class="help-topics"><input data-topic="10" type="radio" id="foresight-help-topic-10"
+                                name="select-help-topic"><label for="foresight-help-topic-10">Other topics & Help
+                                sites</label></li>
+
+                    </ul>
+                </div>
+
+                <div class="help-content-wrapper">
+
+                    <div class="article-wrapper active" data-topic="0">
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Track your package</div>
+                                    <div class="fs-match-card-desc">Track your packages in <b>Your Orders</b>.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Return Items You Ordered</div>
+                                    <div class="fs-match-card-desc">Return your orders using our <b>Online Return
+                                            Center</b>.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Check status of a refund</div>
+                                    <div class="fs-match-card-desc">Track your return and refunds in <b>Your Orders</b>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Update Your Password</div>
+                                    <div class="fs-match-card-desc">Update your password in <b>Your account</b>.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Amazon Prime</div>
+                                    <div class="fs-match-card-desc">Get detailed information on all Prime benefits.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">End Your Amazon Prime Membership</div>
+                                    <div class="fs-match-card-desc">Cancel your membership easily via this page.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="new-row-break"></div>
+
+                    </div>
+
+                    <div class="article-wrapper " data-topic="1">
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Carrier Contact Information</div>
+                                    <div class="fs-match-card-desc">Find the contact information of your delivery
+                                        carriers.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Track your package</div>
+                                    <div class="fs-match-card-desc">Track your packages in <b>Your Orders</b>.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Find a missing package that shows as "Delivered"
+                                    </div>
+                                    <div class="fs-match-card-desc">Actions you can take when your order shows as
+                                        "delivered" but you don't have your package.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Undeliverable Packages</div>
+                                    <div class="fs-match-card-desc">Learn what to do when your package cannot be
+                                        delivered.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Find a missing item from your package</div>
+                                    <div class="fs-match-card-desc">Check why your item is missing from your package.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Missing Tracking Information</div>
+                                    <div class="fs-match-card-desc">Learn why sometimes tracking information might not
+                                        be available.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="new-row-break"></div>
+
+                        <div class="help-card-wrapper">
+                            <button
+                                class="fs-button fs-btn-style-squared fs-btn-color-white fs-btn-size-normal fs-btn-padding-normal">More
+                                in Where's my Stuff</button>
+                        </div>
+
+                    </div>
+
+                    <div class="article-wrapper " data-topic="2">
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Delivery Guarantees</div>
+                                    <div class="fs-match-card-desc">Learn more about our guaranteed delivery offer.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Amazon Prime Shipping Benefits</div>
+                                    <div class="fs-match-card-desc">Check the shipping benefits included in your Prime
+                                        membership.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Shipping Rates and Times</div>
+                                    <div class="fs-match-card-desc">Have a look at shipping rates and times, domestic as
+                                        well as global, all at once.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Amazon Pickup Locations</div>
+                                    <div class="fs-match-card-desc">Learn more about Amazon's pick up alternatives to
+                                        doorstep delivery. </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="new-row-break"></div>
+
+                        <div class="help-card-wrapper">
+                            <button
+                                class="fs-button fs-btn-style-squared fs-btn-color-white fs-btn-size-normal fs-btn-padding-normal">More
+                                information on Shipping and Delivery</button>
+                        </div>
+
+                    </div>
+
+                    <div class="article-wrapper " data-topic="3">
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">About Our Returns Policies</div>
+                                    <div class="fs-match-card-desc">Get detailed information on our 30 days return
+                                        policy.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Refunds</div>
+                                    <div class="fs-match-card-desc">Get detailed information about refund options and
+                                        timelines.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Return a Gift</div>
+                                    <div class="fs-match-card-desc">Return, exchange or replace a gift using our
+                                        <b>Online Return Center</b>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Exchanges and Replacements</div>
+                                    <div class="fs-match-card-desc">Exchange or replace eligible items through <b>Your
+                                            Orders</b>.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Check the Status of Your Refund</div>
+                                    <div class="fs-match-card-desc">Follow up on your return and refunds in <b>Your
+                                            Orders</b>.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="help-card-wrapper">
+                            <div class="fs-match-card" role="button" tabindex="0">
+                                <div class="fs-match-card-detail">
+                                    <div class="fs-match-card-title">Get Product Support</div>
+                                    <div class="fs-match-card-desc">Get help with setup, troubleshoot or how to use your
+                                        product.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

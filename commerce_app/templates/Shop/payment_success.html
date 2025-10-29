@@ -1,0 +1,186 @@
+{% extends 'Shop/base.html' %}
+{% load static %}
+
+{% block title %}
+Payment Successful
+{% endblock %}
+
+{% block main %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">Order Confirmed</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="{% url 'home' %}">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Order Success</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Success Message Start -->
+<div class="container-fluid pt-5 pb-5">
+  <div class="row px-xl-5 justify-content-center">
+    <div class="col-lg-8">
+      <!-- Success Card -->
+      <div class="card shadow-lg border-0 text-center">
+        <div class="card-body p-5">
+          <div class="mb-4">
+            <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center"
+                 style="width: 120px; height: 120px;">
+              <i class="fa fa-check text-white" style="font-size: 60px;"></i>
+            </div>
+          </div>
+
+          <h1 class="text-success font-weight-bold mb-3">Payment Successful!</h1>
+          <h4 class="mb-4">Thank you for your order</h4>
+
+          <p class="lead mb-4">
+            Your order has been placed successfully and is being processed.
+            You will receive an email confirmation shortly.
+          </p>
+
+          <div class="alert alert-info mx-auto" style="max-width: 500px;">
+            <p class="mb-0">
+              <i class="fa fa-info-circle"></i>
+              <strong>Order Number:</strong> #{{ orders.0.id|stringformat:"05d" }}
+              <br>
+              <small class="text-muted">Please save this number for tracking your order</small>
+            </p>
+          </div>
+
+          <!-- Order Summary -->
+          <div class="mt-5 mb-4">
+            <h5 class="font-weight-bold mb-4">Order Summary</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead class="bg-secondary">
+                  <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for order in orders %}
+                  <tr>
+                    <td class="text-left">{{ order.product.title }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>৳{{ order.product.discount_price }}</td>
+                    <td>৳{{ order.product.discount_price|floatformat:2 }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="mt-5">
+            <a href="{% url 'order' %}" class="btn btn-primary btn-lg mx-2 mb-2">
+              <i class="fa fa-list"></i> View Order Details
+            </a>
+            <a href="{% url 'shop' %}" class="btn btn-outline-primary btn-lg mx-2 mb-2">
+              <i class="fa fa-shopping-bag"></i> Continue Shopping
+            </a>
+          </div>
+
+          <!-- Additional Info -->
+          <div class="mt-5 pt-4 border-top">
+            <h6 class="font-weight-bold mb-3">What's Next?</h6>
+            <div class="row text-left">
+              <div class="col-md-4 mb-3">
+                <div class="p-3 bg-light rounded">
+                  <i class="fa fa-envelope fa-2x text-primary mb-3"></i>
+                  <h6 class="font-weight-bold">Email Confirmation</h6>
+                  <p class="small text-muted mb-0">
+                    Check your email for order confirmation and invoice
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="p-3 bg-light rounded">
+                  <i class="fa fa-box fa-2x text-primary mb-3"></i>
+                  <h6 class="font-weight-bold">Order Processing</h6>
+                  <p class="small text-muted mb-0">
+                    We'll start processing your order immediately
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="p-3 bg-light rounded">
+                  <i class="fa fa-shipping-fast fa-2x text-primary mb-3"></i>
+                  <h6 class="font-weight-bold">Delivery</h6>
+                  <p class="small text-muted mb-0">
+                    Your order will be delivered within 3-7 business days
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Support -->
+      <div class="text-center mt-4">
+        <p class="text-muted">
+          Need help? <a href="{% url 'contact' %}" class="text-primary">Contact our support team</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Success Message End -->
+
+<style>
+  .card {
+    border-radius: 15px;
+  }
+
+  .bg-success {
+    background-color: #28a745 !important;
+  }
+
+  .text-success {
+    color: #28a745 !important;
+  }
+
+  .btn-primary {
+    background-color: #D19C97;
+    border-color: #D19C97;
+    transition: all 0.3s;
+  }
+
+  .btn-primary:hover {
+    background-color: #c08880;
+    border-color: #c08880;
+    transform: translateY(-2px);
+  }
+
+  .btn-outline-primary {
+    color: #D19C97;
+    border-color: #D19C97;
+    transition: all 0.3s;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #D19C97;
+    border-color: #D19C97;
+    color: white;
+  }
+
+  .bg-light {
+    background-color: #f8f9fa !important;
+  }
+
+  @media (max-width: 768px) {
+    .btn-lg {
+      font-size: 1rem;
+      padding: 10px 20px;
+    }
+  }
+</style>
+
+{% endblock %}

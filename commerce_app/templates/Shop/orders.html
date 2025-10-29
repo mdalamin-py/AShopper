@@ -1,0 +1,311 @@
+{% extends 'Shop/base.html' %}
+{% load static %}
+
+{% block title %}
+My Orders
+{% endblock %}
+
+{% block main %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">My Orders</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="{% url 'home' %}">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">My Orders</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Orders Content Start -->
+<div class="container-fluid pt-3 pb-5">
+  <div class="row px-xl-5">
+    <div class="col-12">
+      {% if add_order %}
+        <!-- Orders Table -->
+        <div class="table-responsive mb-5">
+          <table class="table table-bordered text-center mb-0">
+            <thead class="bg-secondary text-dark">
+              <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="align-middle">
+              {% for order in add_order %}
+              <tr>
+                <!-- Order ID -->
+                <td class="align-middle">
+                  <strong>#{{ order.id|stringformat:"05d" }}</strong>
+                </td>
+
+                <!-- Product Name -->
+                <td class="align-middle text-left">
+                  <strong>{{ order.product.title }}</strong>
+                  <br>
+                  <small class="text-muted">{{ order.product.category }}</small>
+                </td>
+
+                <!-- Product Image -->
+                <td class="align-middle">
+                  {% if order.product.images %}
+                    <img src="{{ order.product.images.url }}" alt="{{ order.product.title }}"
+                         style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;">
+                  {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center"
+                         style="width: 80px; height: 80px; border-radius: 5px;">
+                      <i class="fa fa-image fa-2x text-muted"></i>
+                    </div>
+                  {% endif %}
+                </td>
+
+                <!-- Price -->
+                <td class="align-middle">
+                  <strong>৳{{ order.product.discount_price }}</strong>
+                </td>
+
+                <!-- Quantity -->
+                <td class="align-middle">
+                  <span class="badge badge-secondary px-3 py-2">{{ order.quantity }}</span>
+                </td>
+
+                <!-- Total Amount -->
+                <td class="align-middle">
+                  {% widthratio order.product.discount_price 1 order.quantity as total_price %}
+                  <strong class="text-primary">৳{{ total_price }}</strong>
+                </td>
+
+                <!-- Order Date -->
+                <td class="align-middle">
+                  <small>{{ order.order_date|date:"d M, Y" }}</small>
+                  <br>
+                  <small class="text-muted">{{ order.order_date|date:"h:i A" }}</small>
+                </td>
+
+                <!-- Status -->
+                <td class="align-middle">
+                  {% if order.status == 'Delivered' %}
+                    <span class="badge badge-success px-3 py-2">
+                      <i class="fa fa-check-circle"></i> Delivered
+                    </span>
+                  {% elif order.status == 'Cancel' %}
+                    <span class="badge badge-danger px-3 py-2">
+                      <i class="fa fa-times-circle"></i> Cancelled
+                    </span>
+                  {% elif order.status == 'Packed' %}
+                    <span class="badge badge-info px-3 py-2">
+                      <i class="fa fa-box"></i> Packed
+                    </span>
+                  {% elif order.status == 'On the Way' %}
+                    <span class="badge badge-warning px-3 py-2">
+                      <i class="fa fa-shipping-fast"></i> On the Way
+                    </span>
+                  {% elif order.status == 'Accepted' %}
+                    <span class="badge badge-primary px-3 py-2">
+                      <i class="fa fa-check"></i> Accepted
+                    </span>
+                  {% else %}
+                    <span class="badge badge-secondary px-3 py-2">
+                      <i class="fa fa-clock"></i> Pending
+                    </span>
+                  {% endif %}
+                </td>
+
+                <!-- Action Buttons -->
+                <td class="align-middle">
+                  <button class="btn btn-sm btn-primary mb-1" data-toggle="modal" data-target="#orderModal{{ order.id }}">
+                    <i class="fa fa-eye"></i> View
+                  </button>
+                  {% if order.status != 'Cancel' and order.status != 'Delivered' %}
+                    <button class="btn btn-sm btn-danger" onclick="alert('Cancel order feature coming soon!')">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  {% endif %}
+                </td>
+              </tr>
+
+              <!-- Order Details Modal -->
+              <div class="modal fade" id="orderModal{{ order.id }}" tabindex="-1" role="dialog"
+                   aria-labelledby="orderModalLabel{{ order.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title" id="orderModalLabel{{ order.id }}">
+                        <i class="fa fa-receipt"></i> Order Details - #{{ order.id|stringformat:"05d" }}
+                      </h5>
+                      <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Order Info -->
+                      <div class="row mb-4">
+                        <div class="col-md-6">
+                          <h6 class="font-weight-bold mb-3">Order Information</h6>
+                          <p><strong>Order ID:</strong> #{{ order.id|stringformat:"05d" }}</p>
+                          <p><strong>Order Date:</strong> {{ order.order_date|date:"F d, Y h:i A" }}</p>
+                          <p><strong>Status:</strong>
+                            {% if order.status == 'Delivered' %}
+                              <span class="badge badge-success">{{ order.status }}</span>
+                            {% elif order.status == 'Cancel' %}
+                              <span class="badge badge-danger">{{ order.status }}</span>
+                            {% else %}
+                              <span class="badge badge-warning">{{ order.status }}</span>
+                            {% endif %}
+                          </p>
+                        </div>
+                        <div class="col-md-6">
+                          <h6 class="font-weight-bold mb-3">Delivery Address</h6>
+                          <p class="mb-1"><strong>{{ order.addressbook.name }}</strong></p>
+                          <p class="mb-1">{{ order.addressbook.address }}, {{ order.addressbook.area }}</p>
+                          <p class="mb-1">{{ order.addressbook.city }}, {{ order.addressbook.province }}</p>
+                          <p class="mb-0"><i class="fa fa-phone"></i> {{ order.addressbook.phone }}</p>
+                        </div>
+                      </div>
+
+                      <!-- Product Details -->
+                      <h6 class="font-weight-bold mb-3">Product Details</h6>
+                      <div class="row mb-4">
+                        <div class="col-md-3">
+                          {% if order.product.images %}
+                            <img src="{{ order.product.images.url }}" class="img-fluid rounded" alt="{{ order.product.title }}">
+                          {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                          <h5>{{ order.product.title }}</h5>
+                          <p class="text-muted">{{ order.product.description|truncatewords:30 }}</p>
+                          <p><strong>Category:</strong> {{ order.product.category }}</p>
+                          <p><strong>Brand:</strong> {{ order.product.brand|default:"N/A" }}</p>
+                          <p><strong>Size:</strong> {{ order.product.sizes|default:"N/A" }}</p>
+                        </div>
+                      </div>
+
+                      <!-- Price Breakdown -->
+                      <h6 class="font-weight-bold mb-3">Price Breakdown</h6>
+                      <table class="table table-sm">
+                        <tr>
+                          <td>Price per item:</td>
+                          <td class="text-right">৳{{ order.product.discount_price }}</td>
+                        </tr>
+                        <tr>
+                          <td>Quantity:</td>
+                          <td class="text-right">{{ order.quantity }}</td>
+                        </tr>
+                        <tr>
+                          <td>Subtotal:</td>
+                          {% widthratio order.product.discount_price 1 order.quantity as subtotal %}
+                          <td class="text-right">৳{{ subtotal }}</td>
+                        </tr>
+                        <tr>
+                          <td>Shipping:</td>
+                          <td class="text-right">৳100.00</td>
+                        </tr>
+                        <tr class="font-weight-bold">
+                          <td>Total:</td>
+                          {% widthratio order.product.discount_price 1 order.quantity as subtotal2 %}
+                          <td class="text-right text-primary">৳{{ subtotal2|add:100 }}</td>
+                        </tr>
+                      </table>
+
+                      <!-- Payment Status -->
+                      <h6 class="font-weight-bold mb-3">Payment Information</h6>
+                      <div class="alert alert-success">
+                        <i class="fa fa-check-circle"></i> Payment Completed Successfully
+                      </div>
+                      <p class="small text-muted mb-0">
+                        <i class="fa fa-lock"></i> Your payment details are secured and encrypted
+                      </p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <a href="{% url 'contact' %}" class="btn btn-primary">Contact Support</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-5">
+          <div class="mb-4">
+            <i class="fa fa-shopping-bag" style="font-size: 100px; color: #ddd;"></i>
+          </div>
+          <h3 class="mt-4 mb-3">No Orders Yet</h3>
+          <p class="text-muted mb-4">You haven't placed any orders. Start shopping now!</p>
+          <a href="{% url 'shop' %}" class="btn btn-primary btn-lg px-5">
+            <i class="fa fa-shopping-cart"></i> Browse Products
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!-- Orders Content End -->
+
+<style>
+  .table td, .table th {
+    vertical-align: middle;
+  }
+
+  .badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    background-color: #D19C97;
+    border-color: #D19C97;
+  }
+
+  .btn-primary:hover {
+    background-color: #c08880;
+    border-color: #c08880;
+  }
+
+  .text-primary {
+    color: #D19C97 !important;
+  }
+
+  .bg-primary {
+    background-color: #D19C97 !important;
+  }
+
+  .modal-content {
+    border-radius: 10px;
+  }
+
+  .modal-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .table {
+      font-size: 0.85rem;
+    }
+
+    .table td, .table th {
+      padding: 0.5rem;
+    }
+
+    .btn-sm {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+    }
+  }
+</style>
+
+{% endblock %}

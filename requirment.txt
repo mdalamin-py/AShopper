@@ -1,0 +1,6 @@
+First of all create a 
+python -m venv env
+Then active the env and
+Install the package 
+pip install django 
+pip install pillow

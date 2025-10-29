@@ -1,0 +1,27 @@
+/* .main-contact {
+    display: flex;
+    gap: 15px;
+    padding-left: 15px;
+} */
+
+.first-contact {
+    border-radius: 18px;
+    background: #FFF;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);
+}
+
+.bg-main {
+    background-color: #C5D5E4;
+    padding-bottom: 50px;
+}
+
+.add-book-titles,
+.addbook-descriptions,
+.text-details {
+    color: #000;
+}
+
+.add-title{
+    display: flex;
+    gap: 15px;
+}

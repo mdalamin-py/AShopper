@@ -1,0 +1,22 @@
+{% extends 'Shop/base.html' %}
+{% load static %}
+
+{% block title %}
+  Empty Cart
+{% endblock %}
+
+{% block main %}
+  <div class="container">
+    <div class="row">
+        <div class="offset-lg-3 col-lg-6 col-md-12 col-12 text-center">
+            <img src="{% static 'img/bag.svg' %}" alt="" class="img-fluid mb-4">
+            <h2>Your shopping cart is empty</h2>
+            <p class="mb-4">
+                Return to the store to add items for your delivery slot. Before proceed to checkout you must add some products to your shopping cart. You will find a lot of interesting products on our shop page.
+            </p>
+            <a href="{% url 'shop' %}" class="btn btn-primary !important">Explore Products</a>
+        </div>
+    </div>
+    <div style="margin-bottom: 250px;"></div>
+  </div>
+{% endblock %}
