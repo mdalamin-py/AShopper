@@ -110,9 +110,9 @@ Shop Detail
             </form>
           {% endif %}
         {% else %}
-          <!-- If not logged in -->
-          <a href="{% url 'login' %}" class="btn btn-primary px-4">
-            <i class="fa fa-sign-in-alt mr-1"></i> Login to Add to Cart
+          <!-- If not logged in - Show Add to Cart but redirect to login -->
+          <a href="{% url 'login' %}" class="btn btn-primary px-4" onclick="event.preventDefault(); window.location='{% url 'login' %}?next=/product-detail/{{ products.id }}/'">
+            <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
           </a>
         {% endif %}
       </div>

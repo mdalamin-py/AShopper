@@ -7,6 +7,8 @@ from .forms import RegisterForm, LoginForm, NewsletterForm, SubscribeForm, Conta
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 
@@ -169,6 +171,7 @@ class ProductDetailsView(View):
 #         Cart(user=request.user, product=cart_product).save()
 #         return redirect('/cart')
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class AllProductCartView(View):
     def get(self, request, pk):
         cart_product = Product.objects.get(pk=pk)
@@ -190,6 +193,7 @@ class AllProductCartView(View):
 
 
 
+@login_required(login_url='login')
 def AddToCart(request):
     user = request.user
     prod_id = request.GET.get('product_id')
@@ -231,6 +235,7 @@ def CartCheckOut(request):
         return redirect('login')
 
 
+@login_required(login_url='login')
 def plus_Cart(request):
     if request.method == 'GET':
         prod_id = request.GET['product_id']
@@ -257,6 +262,7 @@ def plus_Cart(request):
         }
         return JsonResponse(data)
     
+@login_required(login_url='login')
 def minus_Cart(request):
     if request.method == 'GET':
         prod_id = request.GET['product_id']
@@ -307,12 +313,13 @@ def minus_Cart(request):
         return JsonResponse(data)
     
     
+@login_required(login_url='login')
 def remove_Cart(request):
     if request.method == 'GET':
         prod_id = request.GET['product_id']
         cart = Cart.objects.get(Q(product = prod_id) & Q(user=request.user))
         cart.delete()
-        
+
         amount = 0.0
         Shipping_fee = 100.0
         cart_product = [product for product in Cart.objects.all() if product.user == request.user]
@@ -320,8 +327,8 @@ def remove_Cart(request):
             cart_amount = (product.quantity)*(product.product.discount_price)
             amount += cart_amount
             total_amount = amount+Shipping_fee
-            
-            
+
+
         data = {
                'amount': amount,
                'totalamount': total_amount
@@ -362,12 +369,13 @@ def NewsletterView(request):
         return redirect('home')
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class ContactView(View):
     def get(self, request):
         contact_form = ContactForms()
         contact_profile = AddressBook.objects.filter(user=request.user)
         return render(request, 'Shop/contact.html', {'contact_form': contact_form, 'contact_profile': contact_profile})
-    
+
     def post(self, request):
         contact_form = ContactForms(request.POST)
         if contact_form.is_valid():
@@ -393,6 +401,7 @@ def FaqsView(request):
 
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class OrderPlacedView(View):
     def get(self, request):
         orderplaced_form = OrderPlacedForm()
@@ -424,9 +433,10 @@ class OrderPlacedView(View):
     
 
 
+@login_required(login_url='login')
 def order(request):
-    add_order = OrderPlacement.objects.filter(user=request.user)  
-    add_book = AddressBook.objects.filter(user=request.user)  
+    add_order = OrderPlacement.objects.filter(user=request.user)
+    add_book = AddressBook.objects.filter(user=request.user)
     return render (request, 'Shop/orders.html', {'add_order': add_order, 'add_book': add_book})
 
 

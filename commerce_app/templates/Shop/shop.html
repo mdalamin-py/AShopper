@@ -239,8 +239,8 @@ Shop - AShopper | Explore Our Collection
                   </a>
                 {% endif %}
               {% else %}
-                <a href="{% url 'login' %}" class="btn btn-primary btn-sm flex-fill">
-                  <i class="fas fa-sign-in-alt mr-1"></i>Login First
+                <a href="{% url 'login' %}" class="btn btn-primary btn-sm flex-fill" onclick="event.preventDefault(); window.location='{% url 'login' %}?next={{ request.path }}'">
+                  <i class="fas fa-shopping-cart mr-1"></i>Add to Cart
                 </a>
               {% endif %}
             </div>
