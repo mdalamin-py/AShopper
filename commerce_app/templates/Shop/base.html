@@ -90,11 +90,18 @@
         </form>
       </div>
       <div class="col-lg-3 col-6 text-right">
-        <a href="" class="btn border">
-          <i class="fas fa-heart text-primary"></i>
-          <span class="badge">0</span>
-        </a>
-        <a href="{% url 'cart_show' %}" class="btn border position-relative">
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'order' %}" class="btn border position-relative" title="My Orders">
+            <i class="fas fa-box text-primary"></i>
+            <span class="badge badge-primary position-absolute" style="top: 5px; right: 5px; font-size: 0.7rem;" id="order-count">{{ order_count|default:0 }}</span>
+          </a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn border position-relative" title="My Orders" onclick="event.preventDefault(); window.location='{% url 'login' %}?next=/orders/'">
+            <i class="fas fa-box text-primary"></i>
+            <span class="badge badge-primary position-absolute" style="top: 5px; right: 5px; font-size: 0.7rem;">0</span>
+          </a>
+        {% endif %}
+        <a href="{% url 'cart_show' %}" class="btn border position-relative" title="Shopping Cart">
           <i class="fas fa-shopping-cart text-primary"></i>
           {% if request.user.is_authenticated %}
             <span class="badge badge-primary position-absolute" style="top: 5px; right: 5px; font-size: 0.7rem;" id="cart-count">{{ cart_count|default:0 }}</span>
