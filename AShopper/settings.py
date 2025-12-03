@@ -128,12 +128,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
 
+# Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = ('mdalaminislam.py@gmail.com')
-EMAIL_HOST_PASSWORD = ('jtxe tuhm sqgq gloi')
+EMAIL_HOST_USER = 'mdalaminislam.py@gmail.com'
+EMAIL_HOST_PASSWORD = 'ybdnegnwqbdxmnlp'
+DEFAULT_FROM_EMAIL = 'mdalaminislam.py@gmail.com'
 
 
 # Default primary key field type
