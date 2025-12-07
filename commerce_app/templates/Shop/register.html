@@ -9,9 +9,105 @@ Register
 <!-- Font Icon -->
 <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
 <link href="{% static 'css/register.css' %}" rel="stylesheet" />
+<style>
+/* Professional Toast Message Styles */
+.toast-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    min-width: 300px;
+    max-width: 500px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease-in-out;
+    animation: slideInRight 0.5s ease-out forwards;
+}
+
+.toast-message.toast-error {
+    background: linear-gradient(45deg, #dc3545, #e74c3c);
+}
+
+.toast-message.toast-warning {
+    background: linear-gradient(45deg, #ffc107, #f39c12);
+    color: #000;
+}
+
+.toast-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toast-text {
+    font-size: 16px;
+    font-weight: 500;
+    flex: 1;
+    margin-right: 15px;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.toast-close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+</style>
 {% endblock hero %}
 
 {% block main %}
+<!-- Professional Toast Message -->
+{% if messages %}
+    {% for message in messages %}
+    <div id="toast-message" class="toast-message toast-{{ message.tags }}">
+        <div class="toast-content">
+            <span class="toast-text">{{ message }}</span>
+            <button class="toast-close" onclick="closeToast()">&times;</button>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
 <div class="main" style="background-color: darkgrey; padding: 20px; padding-bottom: 30px;">
     <div class="text-center">
         <div class="hover-a">
@@ -55,6 +151,28 @@ Register
 {% block scripthero %}
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+<script>
+// Toast Message JavaScript
+function closeToast() {
+    const toast = document.getElementById('toast-message');
+    if (toast) {
+        toast.style.animation = 'slideOutRight 0.3s ease-out forwards';
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }
+}
+
+// Auto close toast after 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const toast = document.getElementById('toast-message');
+    if (toast) {
+        setTimeout(() => {
+            closeToast();
+        }, 5000);
+    }
+});
+</script>
 {% endblock scripthero %}
 
 

@@ -142,8 +142,9 @@ class RegisterFormView(View):
         regi_form = RegisterForm(request.POST)
         if regi_form.is_valid():
             regi_form.save()
-            messages.success(request, "Congratulation! Your Register Successfully Done..!!")
-        return render(request, 'Shop/register.html', {'regi_form': regi_form})  
+            messages.success(request, "🎉 Registration Successful! Welcome to AShopper! Please login to continue.")
+            return redirect('login')
+        return render(request, 'Shop/register.html', {'regi_form': regi_form})
  
     
 # class ProductDetailsView(View):
